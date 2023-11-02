@@ -1,7 +1,9 @@
 import openai
+import pyttsx3
 from senhagpt import API_KEY
+import time
 
-# Puxa a chave de API do arquivo senhagpt.py
+# Puxa a chave de API do arquivo senhagpt.py 
 
 openai.api_key = API_KEY
 
@@ -9,25 +11,36 @@ openai.api_key = API_KEY
 
 
 def envio_mensagem(mensagem, msg_list=[]):
-
     msg_list.append({"role": "user", "content": mensagem})
-
     resposta = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
         messages=msg_list,
     )
+    return resposta["choices"][0]["message"]["content"]
 
-    return resposta["choices"][0]["message"]
 
-# Comandos e laço de repetição para o usuário realizar a pergunta e o programa exibir a resposta
-
+# Array que armazena as respostas que o ChatGPT gera
 
 msg_list = []
+
+# Função que coleta a resposta gerada pelo GPT, converte e reproduz o áudio
+
+
+def reproduzir_audio():
+    resposta = envio_mensagem(pergunta, msg_list)
+    fala = pyttsx3.init()
+    fala.say(resposta)
+    fala.runAndWait()
+
+
+# Laço de repetição para repetir perguntas ao Chat
+
 while True:
     pergunta = input("Digite sua mensagem: ")
     if pergunta.lower() == "sair" or pergunta == "":
         break
     else:
         resposta = envio_mensagem(pergunta, msg_list)
-        msg_list.append(resposta)
-        print("Chatbot: ", resposta["content"])
+        msg_list.append({"role": "assistant", "content": resposta})
+        print("CopeneskiGPT: ", resposta)
+        reproduzir_audio()
