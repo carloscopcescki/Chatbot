@@ -3,7 +3,7 @@ import pyttsx3
 from senhagpt import API_KEY
 import time
 
-# Puxa a chave de API do arquivo senhagpt.py 
+# Puxa a chave de API do arquivo senhagpt.py
 
 openai.api_key = API_KEY
 
@@ -23,16 +23,6 @@ def envio_mensagem(mensagem, msg_list=[]):
 
 msg_list = []
 
-# Função que coleta a resposta gerada pelo GPT, converte e reproduz o áudio
-
-
-def reproduzir_audio():
-    resposta = envio_mensagem(pergunta, msg_list)
-    fala = pyttsx3.init()
-    fala.say(resposta)
-    fala.runAndWait()
-
-
 # Laço de repetição para repetir perguntas ao Chat
 
 while True:
@@ -43,4 +33,6 @@ while True:
         resposta = envio_mensagem(pergunta, msg_list)
         msg_list.append({"role": "assistant", "content": resposta})
         print("CopeneskiGPT: ", resposta)
-        reproduzir_audio()
+        fala = pyttsx3.init()
+        fala.say(resposta)
+        fala.runAndWait()
