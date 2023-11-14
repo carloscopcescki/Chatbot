@@ -1,11 +1,12 @@
 import openai
 import pyttsx3
-from senhagpt import API_KEY
 import time
 
-# Puxa a chave de API do arquivo senhagpt.py
+# Inserir a chave de API para o programa funcionar
 
-openai.api_key = API_KEY
+chave_api = input("\nInsira aqui a sua chave de API: ")
+
+openai.api_key = chave_api
 
 # Função para o chat gerar resposta e armazenar as respostas no histórico
 
