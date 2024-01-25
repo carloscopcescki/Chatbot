@@ -1,5 +1,4 @@
 import openai
-import pyttsx3
 import streamlit as st
 
 # Gerar página
