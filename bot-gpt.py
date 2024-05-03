@@ -1,6 +1,6 @@
 import streamlit as st
 import openai
-from openai.error import AuthenticationError
+from openai import AuthenticationError
 from PIL import Image
 import requests
 from io import BytesIO
