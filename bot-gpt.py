@@ -13,7 +13,7 @@ api_key = st.sidebar.text_input("Insira aqui a sua chave de API: ", type="passwo
 openai.api_key = api_key
 
 # Definir bot
-bot_list = 'ChatBot'
+bot_list = ["",'ChatBot']
 opcao = st.sidebar.selectbox("Selecione um Bot", bot_list)
 
 # Gerar chatbot
