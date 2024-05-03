@@ -2,5 +2,3 @@ openai
 streamlit
 Pillow
 requests
-openai.error
-AuthenticationError
