@@ -1,5 +1,6 @@
 import streamlit as st
 import openai
+from openai.error import AuthenticationError
 from PIL import Image
 import requests
 from io import BytesIO
@@ -34,25 +35,28 @@ if opcao == "ChatBot" and api_key != "":
         with st.chat_message("user"):
             st.markdown(prompt)
 
-        # Chame a API OpenAI para obter a resposta
-        response = openai.ChatCompletion.create(
-            model=st.session_state["openai_model"],
-            messages=[
-                {"role": m["role"], "content": m["content"]}
-                for m in st.session_state.messages
-            ],
-        )
+        try:
+            # Chame a API OpenAI para obter a resposta
+            response = openai.ChatCompletion.create(
+                model=st.session_state["openai_model"],
+                messages=[
+                    {"role": m["role"], "content": m["content"]}
+                    for m in st.session_state.messages
+                ],
+            )
 
-        # Obtenha a resposta do assistente
-        assistant_response = response.get("choices", [])
-        content = assistant_response[0].get("message", {}).get("content", "")
-        
-        # Adicione a resposta à lista de mensagens
-        st.session_state.messages.append({"role": "assistant", "content": content})
+            # Obtenha a resposta do assistente
+            assistant_response = response.get("choices", [])
+            content = assistant_response[0].get("message", {}).get("content", "")
 
-        # Exiba a resposta na interface do usuário
-        with st.chat_message("assistant"):
-            st.markdown(content)
+            # Adicione a resposta à lista de mensagens
+            st.session_state.messages.append({"role": "assistant", "content": content})
+
+            # Exiba a resposta na interface do usuário
+            with st.chat_message("assistant"):
+                st.markdown(content)
+        except AuthenticationError:
+            st.warning("Erro de autenticação: Verifique se a sua chave de API está correta.")
 
 # Gerar imagebot            
 elif opcao == 'ImageBot' and api_key != "":
@@ -81,5 +85,4 @@ elif opcao == 'ImageBot' and api_key != "":
 elif api_key == "":
      st.warning("Insira a chave de API")
 else:
-    st.warning("Selecione um bot")       
-    
+    st.warning("Selecione um bot")
